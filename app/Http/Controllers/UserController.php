@@ -47,4 +47,31 @@ class UserController extends Controller
 
         return redirect()->route('users.index');
     }
+
+    public function edit(User $user)
+    {
+        return view('users.edit', ['user'=> $user]);
+    }
+
+    public function update(User $user)
+    {
+
+        // dd('actualizado');
+
+        $data = request()->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email', $user->id,
+            'password' => 'required'
+        ]);
+
+        if($data['password'] != null){
+            $data['password'] = bcrypt($data['password']);
+        }else{
+            unset($data['password']);
+        }
+
+        $user -> update($data);
+
+        return redirect()->route('users.show', ['user' => $user]);
+    }
 }
