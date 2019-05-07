@@ -36,3 +36,6 @@ Route::post('/usuarios', 'UserController@store');
 
 
 Route::get('/saludo/{name}/{nickname?}', 'WelcomeUserController'); 
+
+Route::delete('/usuarios/{user}', 'UserController@destroy')
+    ->name('users.destroy');
