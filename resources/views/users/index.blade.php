@@ -5,24 +5,43 @@
 @section('content')
     <h1>{{ $title }}</h1>
 
-    <p><a href="{{route('users.create')}}">Crear Usuario</a></p>
-    <ul>
-        @forelse ($users as $user)
-            <li>{{ $user->name }}, ({{$user->email}})
-                <a href="{{ route('users.show',$user) }}">Ver detalle</a>
-                <a href="{{ route('users.edit',$user) }}">Editar</a>
-                <form action="{{ route('users.destroy', $user)}}" method="POST">
-                    {{csrf_field()}}
-                    {{method_field('DELETE')}}
+    
+    <p><a href="{{route('users.create')}}" class="btn btn-primary">Crear Usuario</a></p>
 
-                    <button type="submit">Eliminar</button>
-                </form>
-            </li>
+    @if($users->isNotEmpty())
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach($users as $user)
+          <tr>
+            <th scope="row">{{$user->id}}</th>
+            <td>{{$user->name}}</td>
+            <td>{{$user->email}}</td>
+            <td>
 
-        @empty
-            <li>No hay usuarios registrados.</li>
-        @endforelse
-    </ul>
+                    <form action="{{ route('users.destroy', $user)}}" method="POST">
+                        {{csrf_field()}}
+                        {{method_field('DELETE')}}
+                        <a href="{{ route('users.show',$user) }}" class="btn btn-link"><span class="oi oi-eye"></span></a>
+                        <a href="{{ route('users.edit',$user) }}" class="btn btn-link"><span class="oi oi-pencil"></span></a>
+                        <button type="submit" class="btn btn-link"><span class="oi oi-trash"></span></button>
+                    </form>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+@else
+      <p>No hay usuarioos registrados</p>
+@endif
+
 @endsection
 
 @section('sidebar')
